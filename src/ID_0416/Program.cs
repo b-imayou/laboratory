@@ -7,7 +7,7 @@ const int bigJunpRangeMax = 10000;
 const int junpRange = 1;
 
 /// <summary>
-/// 
+/// コメント追記
 /// </summary>
 bool CheckInputRange(int value, int min, int max)
 {
