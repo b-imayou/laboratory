@@ -1,64 +1,85 @@
-﻿
+﻿//図のようなストップウォッチがあります．このストップウォッチには０を示す目印が一つあ
+//るだけで，目盛りがありません．起動した瞬間，針は目印を指し，そこから針は軸を中心に
+//一定の割合で時計回りに回転します．目盛りがないので，起動からの経過時間を直接読み取
+//ることはできません．その代わり，針が目印から時計回りに a 度回ったときの経過時間が t 秒
+//であることがわかっています．ただし，a は 360 度未満とします．
+//角度 a と経過時間 t が与えられたとき，ストップウォッチ起動後に読み取った針の角度 r が
+//表す経過時間を求めるプログラムを作成せよ．ただし，針が 1 周していないことはわかって
+//いるものとする．
+//入力
+//１行に角度 a (1 ≤ a ≤ 359) と角度 a のときの経過時間 t (1 ≤ t ≤ 1, 000)，読み取った角度 r
+//(0 ≤ r ≤ 359) がすべて整数で与えられる．ただし，a と r の単位は度，t の単位は秒とする．
+//出力
+//読み取った針の角度が表す経過時間を秒で１行に実数で出力する．ただし，誤差がプラスマ
+//イナス 0.001 を超えてはならない．
+//入力例 1
+//180 120 90
+//出力例 1
+//60.0
+//入力例 2
+//90 100 120
+//出力例 2
+//133.333333
 
-const int homeRangeMin = 0;
-const int homeRangeMax = 10000;
-const int bigJunpRangeMin = 2;
-const int bigJunpRangeMax = 10000;
-const int junpRange = 1;
 
 /// <summary>
-/// コメント追記
+/// 
 /// </summary>
-bool CheckInputRange(int value, int min, int max)
-{
-    if (min > value || value > max)
-    {
-        Console.WriteLine($"入力値:{value}は範囲外です {min}～{max}");
-        return false;
-    }
-    return true;
-};
+bool CheckInputRange(int value, int min, int max) => min <= value && value <= max;
 
 
 for (; ; )
 {
-    Console.WriteLine("基準確度を入力してください");
-    string inputHomeDistance = Console.ReadLine(); // 巣までの距離
-    int homeDistanceValue = 0;
+    var inputValues = Console.ReadLine();
+    if(inputValues == null)
+    {
+        continue;
+    }
+
+    var inputList = inputValues.Split(' ');
+    if (inputList.Count() != 3)
+    {
+        continue;
+    }
+
     //数字チェック
-    if (!int.TryParse(inputHomeDistance, out homeDistanceValue))
-    {
-        Console.WriteLine($"入力値:{inputHomeDistance}は整数ではありません");
-        continue;
-    }
-
-    //数字範囲チェック
-    if (!CheckInputRange(homeDistanceValue, homeRangeMin, homeRangeMax))
+    if (!int.TryParse(inputList[0], out int angle))
     {
         continue;
     }
 
-    Console.WriteLine($"大ジャンプ距離を入力してください 巣穴までの距離：{homeDistanceValue}");
-    string inputBigJumpDistance = Console.ReadLine(); // 大ジャンプ距離
-    int bigJumpDistanceValue = 0;
-    //数字チェック
-    if (!int.TryParse(inputBigJumpDistance, out bigJumpDistanceValue))
-    {
-        Console.WriteLine($"入力値:{inputBigJumpDistance}は整数ではありません");
-        continue;
-    }
-
-    //数字範囲チェック
-    if (!CheckInputRange(bigJumpDistanceValue, bigJunpRangeMin, bigJunpRangeMax))
+    if (!int.TryParse(inputList[1], out int elapsedTime))
     {
         continue;
     }
 
-    Console.WriteLine($" 巣穴までの距離：{homeDistanceValue}　 大ジャンプ距離：{ bigJumpDistanceValue} ジャンプ距離：{junpRange}");
+    if (!int.TryParse(inputList[2], out int readAngle))
+    {
+        continue;
+    }
 
-    int bigJunpCount = homeDistanceValue / bigJumpDistanceValue;
-    int junpCount = homeDistanceValue % bigJumpDistanceValue;
+    //範囲チェック
+    if (!CheckInputRange(angle, 1, 359))
+    {
+        continue;
+    }
 
-    Console.WriteLine($" 巣穴までの距離：{homeDistanceValue}　 大ジャンプ数：{ bigJunpCount} ジャンプ数：{junpCount}");
+    if (!CheckInputRange(elapsedTime, 1, 1000))
+    {
+        continue;
+
+    }
+    if (!CheckInputRange(readAngle, 0, 359))
+    {
+        continue;
+    }
+
+    //１経過時間で進む角度を計算
+    double oneAngle = 1.0 * elapsedTime / angle;
+
+    double totalElapsedTime  = oneAngle * readAngle;
+
+    Console.WriteLine($"{totalElapsedTime}");
+
+
 }
-
